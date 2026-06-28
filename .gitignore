@@ -1,0 +1,8 @@
+node_modules/
+public/
+.quartz-cache/
+content/
+.DS_Store
+Thumbs.db
+.env
+*.local
