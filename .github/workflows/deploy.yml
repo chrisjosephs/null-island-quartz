@@ -27,6 +27,7 @@ jobs:
         with:
           repository: chrisjosephs/null-island-vault
           path: content
+          token: ${{ secrets.VAULT_READ_ACCESS }}
       - name: Setup Node
         uses: actions/setup-node@v4
         with:
