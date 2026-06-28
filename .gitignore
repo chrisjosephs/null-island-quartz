@@ -6,3 +6,5 @@ content/
 Thumbs.db
 .env
 *.local
+.quartz/plugins/
+docs/

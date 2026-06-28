@@ -1,0 +1,38 @@
+{
+  "name": "character-infobox",
+  "version": "1.0.0",
+  "description": "Character infobox component for Null Island — renders all frontmatter fields for Class: Character pages",
+  "type": "module",
+  "license": "MIT",
+  "exports": {
+    ".": {
+      "import": "./dist/index.js"
+    },
+    "./components": {
+      "import": "./dist/components/index.js"
+    },
+    "./package.json": "./package.json"
+  },
+  "main": "./dist/index.js",
+  "scripts": {
+    "build": "esbuild src/CharacterInfobox.tsx --bundle --outfile=dist/components/index.js --platform=node --format=esm --jsx=automatic --jsx-import-source=preact --packages=external --external:preact && esbuild src/index.ts --bundle --outfile=dist/index.js --platform=node --format=esm --packages=external"
+  },
+  "quartz": {
+    "name": "character-infobox",
+    "displayName": "Character Infobox",
+    "description": "Sidebar infobox displaying all frontmatter for Class: Character pages",
+    "version": "1.0.0",
+    "category": "component",
+    "defaultEnabled": true,
+    "components": {
+      "CharacterInfobox": {
+        "name": "CharacterInfobox",
+        "displayName": "Character Infobox",
+        "description": "Renders a bordered infobox of all character frontmatter in the right sidebar",
+        "version": "1.0.0",
+        "defaultPosition": "right",
+        "defaultPriority": 5
+      }
+    }
+  }
+}

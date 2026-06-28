@@ -6,8 +6,8 @@ configuration:
   enablePopovers: true
   analytics:
     provider: plausible
-  locale: en-US
-  baseUrl: chrisjosephs.github.io/null-island-vault
+  locale: en-GB
+  baseUrl: chrisjosephs.github.io/null-island-quartz
   ignorePatterns:
     - private
     - templates
@@ -272,6 +272,12 @@ plugins:
       darkMode: auto
       exportPadding: 20
     order: 50
+  - source: ./plugins/character-infobox
+    enabled: true
+    layout:
+      position: right
+      priority: 5
+      display: desktop-only
 layout:
   groups:
     toolbar:
