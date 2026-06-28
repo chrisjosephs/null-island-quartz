@@ -26,7 +26,10 @@ backlinks, and Wikipedia-style hover-previews.
 
 ## Structure
 
-- `content/` — the Null Island vault (the actual writing and lore). Markdown.
+- `content/` — the Null Island vault (the actual writing and lore). This should
+  be a **symlink** to the separate vault repository, not a copy. The vault lives
+  at https://github.com/chrisjosephs/null-island-vault and is the single source
+  of truth for all Markdown content.
 - `quartz/` — the Quartz site generator and custom components.
 - `quartz.config.*` / `quartz.layout.*` — site configuration and layout.
 
