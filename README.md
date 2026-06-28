@@ -5,7 +5,7 @@ story's Obsidian vault into a browsable static website.
 
 There are two ways to use what's here:
 
-- **Read the book.** The site presents *Null Island I — Leviathan* (and what
+- **Read the book.** The site presents *Null Island I - Leviathan* (and what
   follows) as readable, navigable text, with character names linking to their
   pages and hover-previews along the way.
 - **Geek out on the wiki.** Every character, location, and artefact has its own
