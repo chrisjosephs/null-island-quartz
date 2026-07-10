@@ -36,6 +36,18 @@ export default (() => {
     )
     const ogImageDefaultPath = `https://${cfg.baseUrl}/static/og-image.png`
 
+    // Per-page override via `socialImage` frontmatter; otherwise the branded
+    // site-wide default at /static/og-image.png. A value starting with http(s)
+    // is used as-is; anything else is resolved relative to the site root.
+    const rawOgImage = fileData.frontmatter?.socialImage
+    const ogImagePath =
+      typeof rawOgImage === "string" && rawOgImage.length > 0
+        ? /^https?:\/\//.test(rawOgImage)
+          ? rawOgImage
+          : `https://${joinSegments(cfg.baseUrl ?? "example.com", rawOgImage)}`
+        : ogImageDefaultPath
+    const usingDefaultOgImage = ogImagePath === ogImageDefaultPath
+
     const coreStylesheet = css[0]?.content
     const coreScript = js.find(
       (r) => r.loadTime === "beforeDOMReady" && r.contentType === "external",
@@ -73,13 +85,19 @@ export default (() => {
 
         {!usesCustomOgImage && (
           <>
-            <meta property="og:image" content={ogImageDefaultPath} />
-            <meta property="og:image:url" content={ogImageDefaultPath} />
-            <meta name="twitter:image" content={ogImageDefaultPath} />
+            <meta property="og:image" content={ogImagePath} />
+            <meta property="og:image:url" content={ogImagePath} />
+            <meta name="twitter:image" content={ogImagePath} />
             <meta
               property="og:image:type"
-              content={`image/${getFileExtension(ogImageDefaultPath) ?? "png"}`}
+              content={`image/${getFileExtension(ogImagePath) ?? "png"}`}
             />
+            {usingDefaultOgImage && (
+              <>
+                <meta property="og:image:width" content="1200" />
+                <meta property="og:image:height" content="630" />
+              </>
+            )}
           </>
         )}
 
