@@ -1,3 +1,39 @@
 @use "./variables.scss" as *;
 
 // put your custom CSS here!
+
+// Image styling via callout wrappers (keeps alt text as a real description).
+//   > [!center]        -> centered
+//   > [!100vh]         -> capped at viewport height, no alignment change
+//   > [!100vh-center]  -> capped at viewport height + centered
+// Matches the Obsidian center-images.css snippet.
+
+// Strip callout chrome for all three
+.callout[data-callout="center"],
+.callout[data-callout="100vh"],
+.callout[data-callout="100vh-center"] {
+  border: none;
+  background: none;
+  padding: 0;
+  margin-inline: auto;
+  box-shadow: none;
+
+  & > .callout-title {
+    display: none;
+  }
+}
+
+// Centre content — only the centring variants
+.callout[data-callout="center"],
+.callout[data-callout="100vh-center"] {
+  text-align: center;
+}
+
+// Height cap — both 100vh variants. vh first as fallback, dvh where supported.
+.callout[data-callout="100vh"] img,
+.callout[data-callout="100vh-center"] img {
+  max-height: 100vh;
+  max-height: 100dvh;
+  width: auto;
+  height: auto;
+}
