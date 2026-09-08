@@ -16,6 +16,15 @@ configuration:
     - "**/*NOTE"
     # Raw idea bank - unfiled fragments, never published. See vault CLAUDE.md.
     - Z-Snippets
+    # Agent instruction files - tooling config for Claude Code, not vault content.
+    - CLAUDE.md
+    - CLAUDE.local.md
+    - AGENTS.md
+    - AGENTS.MD.md
+    - "**/CLAUDE.md"
+    - "**/CLAUDE.local.md"
+    - "**/AGENTS.md"
+    - "**/AGENTS.MD.md"
 
   theme:
     fontOrigin: googleFonts
