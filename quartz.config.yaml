@@ -292,6 +292,19 @@ plugins:
       position: right
       priority: 5
       display: desktop-only
+  # Author-only callouts. mode: strip removes them from the source before it is
+  # parsed, so the text never reaches the HTML, the search index or the RSS feed.
+  # mode: toggle instead ships them hidden and reveals them with ?development=1 -
+  # convenient, but the text is then present in the published page source.
+  # Runs at order 1 so it happens before anything parses the markdown.
+  - source: ./plugins/hide-todos
+    enabled: true
+    options:
+      mode: strip
+      param: development
+      callouts:
+        - todo
+    order: 1
 layout:
   groups:
     toolbar:

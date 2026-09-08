@@ -1,0 +1,25 @@
+{
+  "name": "hide-todos",
+  "version": "1.0.0",
+  "description": "Keeps author-only callouts (todo, note-to-self) out of the published Null Island site",
+  "type": "module",
+  "license": "MIT",
+  "exports": {
+    ".": {
+      "import": "./dist/index.js"
+    },
+    "./package.json": "./package.json"
+  },
+  "main": "./dist/index.js",
+  "scripts": {
+    "build": "esbuild src/index.ts --bundle --outfile=dist/index.js --platform=node --format=esm --packages=external"
+  },
+  "quartz": {
+    "name": "hide-todos",
+    "displayName": "Hide Todos",
+    "description": "Strips author-only callouts from the build, or hides them behind a ?development=1 switch",
+    "version": "1.0.0",
+    "category": "transformer",
+    "defaultEnabled": true
+  }
+}
