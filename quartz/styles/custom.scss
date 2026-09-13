@@ -4,12 +4,16 @@
 
 // Image styling via callout wrappers (keeps alt text as a real description).
 //   > [!center]        -> centered
+//   > [!center-2x]     -> centered, double font size, vertical padding removed
 //   > [!100vh]         -> capped at viewport height, no alignment change
 //   > [!100vh-center]  -> capped at viewport height + centered
-// Matches the Obsidian center-images.css snippet.
+// Matches the Obsidian center-images.css snippet. Quartz does not know these
+// callout types, so without the rules below it renders them as an ordinary
+// callout with a pencil icon and a "Center 2x" title.
 
 // Strip callout chrome for all three
 .callout[data-callout="center"],
+.callout[data-callout="center-2x"],
 .callout[data-callout="100vh"],
 .callout[data-callout="100vh-center"] {
   border: none;
@@ -25,6 +29,7 @@
 
 // Centre content — only the centring variants
 .callout[data-callout="center"],
+.callout[data-callout="center-2x"],
 .callout[data-callout="100vh-center"] {
   text-align: center;
 }
@@ -36,4 +41,46 @@
   max-height: 100dvh;
   width: auto;
   height: auto;
+}
+
+// A <table> is block-level, so text-align does nothing to it. Shrink it to its
+// content and let the auto margins centre it. Quartz wraps tables in
+// .table-container, which stays as it is so wide tables can still scroll.
+.callout[data-callout="center"] table,
+.callout[data-callout="center-2x"] table,
+.callout[data-callout="100vh-center"] table {
+  width: fit-content;
+  max-width: 100%;
+  margin-inline: auto;
+}
+
+// center-2x: double the font and take the vertical air out. Built for emoji
+// tables, which need the size to read at all and look absurd with a full
+// paragraph's worth of space above and below.
+.callout[data-callout="center-2x"] {
+  margin-block: 0.2em;
+
+  & > .callout-content {
+    font-size: 2em;
+    line-height: 1.15;
+    margin: 0;
+  }
+
+  & .table-container {
+    margin-block: 0;
+  }
+
+  & table {
+    margin-block: 0;
+  }
+
+  & th,
+  & td {
+    padding-block: 0.15em;
+    text-align: center;
+  }
+
+  & th {
+    font-weight: 500;
+  }
 }
