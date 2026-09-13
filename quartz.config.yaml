@@ -304,6 +304,18 @@ plugins:
       param: development
       callouts:
         - todo
+
+  # `***`, `---` and `___` all compile to an identical bare <hr>, so CSS cannot
+  # tell them apart. This tags each one with the character it was written with -
+  # data-hr="beat" for ***, data-hr="section" for --- - and gives them different
+  # vertical spacing. Beat breaks are frequent and stay tight; section breaks are
+  # rare and keep the air.
+  - source: ./plugins/hr-weights
+    enabled: true
+    options:
+      beatMargin: 16px
+      sectionMargin: 32px
+      injectCss: true
     order: 1
 layout:
   groups:

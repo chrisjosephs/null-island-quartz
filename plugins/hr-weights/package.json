@@ -1,0 +1,23 @@
+{
+  "name": "hr-weights",
+  "version": "1.0.0",
+  "description": "Distinguishes *** from --- horizontal rules so they can be styled apart",
+  "type": "module",
+  "license": "MIT",
+  "exports": {
+    ".": { "import": "./dist/index.js" },
+    "./package.json": "./package.json"
+  },
+  "main": "./dist/index.js",
+  "scripts": {
+    "build": "esbuild src/index.ts --bundle --outfile=dist/index.js --platform=node --format=esm --packages=external"
+  },
+  "quartz": {
+    "name": "hr-weights",
+    "displayName": "HR Weights",
+    "description": "Tags each <hr> with the character it was written with, so *** beat breaks and --- section breaks can carry different spacing",
+    "version": "1.0.0",
+    "category": "transformer",
+    "defaultEnabled": true
+  }
+}
