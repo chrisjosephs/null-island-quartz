@@ -92,6 +92,14 @@ const LONG_FIELDS = new Set([
 // Fields hidden from the infobox — structural, not content
 const SKIP_FIELDS = new Set(["Class", "title"])
 
+// Scenes carry a lot of Radial Timeline bookkeeping (ID, Pending Edits, Due, ...),
+// so scenes show only this whitelist, in this order.
+const SCENE_FIELDS = ["Act", "When", "POV", "Subplot", "Character", "Props", "Synopsis"]
+
+// [[Target|Shown]] -> Shown, [[Target]] -> Target (the sidebar is plain text)
+const plainLinks = (s) =>
+  String(s).replace(/!?\[\[([^\]|#]+)(?:#[^\]|]*)?(?:\|([^\]]*))?\]\]/g, (m, t, a) => (a || t).trim())
+
 function renderField(key, value) {
   // Skip nullish / empty values
   if (value === undefined || value === null || value === "" || value === false) return null
@@ -109,6 +117,14 @@ function renderField(key, value) {
     return _jsx("img", { class: "char-infobox-portrait", src, alt: "Character portrait" })
   }
 
+  // Scene cast is stored as a comma-separated string: show it as a list
+  if (key === "Character" && typeof value === "string") {
+    value = value
+      .split(/,\s*(?![^()]*\))/)
+      .map((v) => v.trim())
+      .filter(Boolean)
+  }
+
   // Array — bulleted list
   if (Array.isArray(value)) {
     const items = value.filter((v) => v !== null && v !== undefined && String(v).trim() !== "")
@@ -119,13 +135,13 @@ function renderField(key, value) {
         _jsx("div", { class: "char-infobox-list-label", children: key }),
         _jsx("ul", {
           class: "char-infobox-list",
-          children: items.map((item, i) => _jsx("li", { children: String(item) }, String(i))),
+          children: items.map((item, i) => _jsx("li", { children: plainLinks(item) }, String(i))),
         }),
       ],
     })
   }
 
-  const strVal = String(value)
+  const strVal = plainLinks(value)
   if (!strVal.trim()) return null
 
   // Named long fields OR any string containing a newline → block with sub-heading
@@ -153,18 +169,22 @@ function renderField(key, value) {
 
 const CharacterInfobox = ({ fileData, displayClass }) => {
   const fm = fileData?.frontmatter
-  if (!fm || fm.Class !== "Character") return null
+  if (!fm || (fm.Class !== "Character" && fm.Class !== "Scene")) return null
+  const isScene = fm.Class === "Scene"
 
   const allKeys = Object.keys(fm).filter((k) => !SKIP_FIELDS.has(k))
   const firstKeys = FIRST_FIELDS.filter((k) => allKeys.includes(k))
   const restKeys = allKeys.filter((k) => !FIRST_FIELDS.includes(k))
-  const orderedKeys = [...firstKeys, ...restKeys]
+  const orderedKeys = isScene
+    ? SCENE_FIELDS.filter((k) => allKeys.includes(k))
+    : [...firstKeys, ...restKeys]
 
   const fieldEls = orderedKeys.map((k) => renderField(k, fm[k])).filter((el) => el !== null)
 
   const classes = ["char-infobox", displayClass].filter(Boolean).join(" ")
-  const title =
-    typeof fm.title === "string"
+  const title = isScene
+    ? "Scene"
+    : typeof fm.title === "string"
       ? fm.title
       : fm["Full-Name"]
         ? String(fm["Full-Name"])

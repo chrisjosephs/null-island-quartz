@@ -126,3 +126,34 @@
     height: auto;
   }
 }
+
+// Right sidebar (graph, infobox, table of contents, ...)
+//
+// Desktop: the sidebar is pinned to the viewport height, so anything taller
+// than the screen (a long character or scene infobox) was cut off with no way
+// to reach the rest. Let it scroll, and stop the pieces being squashed to fit.
+//
+// Below desktop: Quartz lays the sidebar pieces out in a row, which puts the
+// graph and the infobox side by side in two cramped columns. Stack them, one
+// followed by the other.
+.page > #quartz-body .sidebar.right {
+  @media all and ($desktop) {
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    scrollbar-width: thin;
+
+    & > * {
+      flex-shrink: 0;
+    }
+  }
+
+  @media all and not ($desktop) {
+    flex-direction: column;
+
+    & > * {
+      flex: none;
+      width: 100%;
+      max-height: none;
+    }
+  }
+}

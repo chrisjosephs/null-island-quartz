@@ -17,7 +17,16 @@ const LONG_FIELDS = new Set([
 // Structural fields not shown in the infobox
 const SKIP_FIELDS = new Set(["Class", "title"])
 
-function renderField(key: string, value: unknown) {
+// Scenes carry a lot of Radial Timeline bookkeeping (ID, Pending Edits, Due, ...),
+// so scenes show only this whitelist, in this order.
+const SCENE_FIELDS = ["Act", "When", "POV", "Subplot", "Character", "Props", "Synopsis"]
+
+// [[Target|Shown]] -> Shown, [[Target]] -> Target (the sidebar is plain text)
+const plainLinks = (s: unknown) =>
+  String(s).replace(/!?\[\[([^\]|#]+)(?:#[^\]|]*)?(?:\|([^\]]*))?\]\]/g, (_m: string, t: string, a?: string) => (a || t).trim())
+
+function renderField(key: string, rawValue: unknown) {
+  let value = rawValue
   if (value === undefined || value === null || value === "" || value === false) return null
   if (Array.isArray(value) && value.length === 0) return null
 
@@ -31,6 +40,14 @@ function renderField(key: string, value: unknown) {
     return <img class="char-infobox-portrait" src={src} alt="Character portrait" />
   }
 
+  // Scene cast is stored as a comma-separated string: show it as a list
+  if (key === "Character" && typeof value === "string") {
+    value = value
+      .split(/,\s*(?![^()]*\))/)
+      .map((v) => v.trim())
+      .filter(Boolean)
+  }
+
   // Array — bulleted list
   if (Array.isArray(value)) {
     const items = value.filter((v) => v !== null && v !== undefined && String(v).trim() !== "")
@@ -40,14 +57,14 @@ function renderField(key: string, value: unknown) {
         <div class="char-infobox-list-label">{key}</div>
         <ul class="char-infobox-list">
           {items.map((item, i) => (
-            <li key={i}>{String(item)}</li>
+            <li key={i}>{plainLinks(item)}</li>
           ))}
         </ul>
       </div>
     )
   }
 
-  const strVal = String(value)
+  const strVal = plainLinks(value)
   if (!strVal.trim()) return null
 
   // Named long fields or multi-line strings → block sub-heading
@@ -78,18 +95,22 @@ export const CharacterInfobox: QuartzComponent = ({
   displayClass,
 }: QuartzComponentProps) => {
   const fm = fileData?.frontmatter as Record<string, unknown> | undefined
-  if (!fm || fm.Class !== "Character") return <></>
+  if (!fm || (fm.Class !== "Character" && fm.Class !== "Scene")) return <></>
+  const isScene = fm.Class === "Scene"
 
   const allKeys = Object.keys(fm).filter((k) => !SKIP_FIELDS.has(k))
   const firstKeys = FIRST_FIELDS.filter((k) => allKeys.includes(k))
   const restKeys = allKeys.filter((k) => !FIRST_FIELDS.includes(k))
-  const orderedKeys = [...firstKeys, ...restKeys]
+  const orderedKeys = isScene
+    ? SCENE_FIELDS.filter((k) => allKeys.includes(k))
+    : [...firstKeys, ...restKeys]
 
   const fieldEls = orderedKeys.map((k) => renderField(k, fm[k])).filter((el) => el !== null)
 
   const classes = ["char-infobox", displayClass].filter(Boolean).join(" ")
-  const title =
-    typeof fm.title === "string"
+  const title = isScene
+    ? "Scene"
+    : typeof fm.title === "string"
       ? fm.title
       : fm["Full-Name"]
         ? String(fm["Full-Name"])
