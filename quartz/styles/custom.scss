@@ -84,3 +84,45 @@
     font-weight: 500;
   }
 }
+
+// Gallery: tiles whatever is inside it side by side, as many across as fit,
+// and keeps wrapping as items are added. Each item is its own nested callout,
+// so an image and its caption stay together:
+//   > [!gallery]
+//   > > [!center]
+//   > > ![[one.jpg|description|160]]
+//   > > <small>caption</small>
+//   >
+//   > > [!center]
+//   > > ![[two.jpg|description|160]]
+//   > > <small>caption</small>
+// Matches the gallery rules in the Obsidian center-images.css snippet, which
+// Quartz never sees because .obsidian is ignored.
+.callout[data-callout="gallery"] {
+  border: none;
+  background: transparent;
+  padding: 0;
+  box-shadow: none;
+
+  & > .callout-title {
+    display: none;
+  }
+
+  & > .callout-content {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(min(100%, 9.5rem), 1fr));
+    gap: 1rem;
+    align-items: start;
+    padding: 0;
+
+    & > * {
+      margin: 0;
+      min-width: 0;
+    }
+  }
+
+  & img {
+    width: 100%;
+    height: auto;
+  }
+}
