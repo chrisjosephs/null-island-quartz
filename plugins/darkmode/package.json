@@ -1,0 +1,65 @@
+{
+  "name": "darkmode",
+  "version": "0.1.0",
+  "description": "Vendored copy of @quartz-community/darkmode, patched so first-time visitors get dark mode",
+  "type": "module",
+  "license": "MIT",
+  "author": "Quartz Community",
+  "homepage": "https://github.com/quartz-community/darkmode",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/quartz-community/darkmode"
+  },
+  "keywords": [
+    "quartz",
+    "quartz-plugin",
+    "darkmode",
+    "theme",
+    "component"
+  ],
+  "exports": {
+    ".": {
+      "import": "./dist/index.js"
+    },
+    "./components": {
+      "import": "./dist/components/index.js"
+    },
+    "./package.json": "./package.json"
+  },
+  "main": "./dist/index.js",
+  "sideEffects": false,
+  "peerDependencies": {
+    "preact": "^10.0.0"
+  },
+  "peerDependenciesMeta": {
+    "preact": {
+      "optional": false
+    }
+  },
+  "dependencies": {
+    "@quartz-community/types": "^0.2.1",
+    "@quartz-community/utils": "^0.1.0"
+  },
+  "engines": {
+    "node": ">=22",
+    "npm": ">=10.9.2"
+  },
+  "quartz": {
+    "name": "darkmode",
+    "displayName": "Dark Mode",
+    "category": "component",
+    "version": "1.0.0",
+    "quartzVersion": ">=5.0.0",
+    "dependencies": [],
+    "defaultOrder": 50,
+    "defaultEnabled": true,
+    "defaultOptions": {},
+    "components": {
+      "Darkmode": {
+        "displayName": "Dark Mode",
+        "defaultPosition": "left",
+        "defaultPriority": 30
+      }
+    }
+  }
+}

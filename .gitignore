@@ -1,7 +1,7 @@
 node_modules/
 public/
 .quartz-cache/
-content/
+/content
 .DS_Store
 Thumbs.db
 .env

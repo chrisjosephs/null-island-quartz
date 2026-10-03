@@ -13,6 +13,9 @@ configuration:
     - templates
     - .obsidian
     - "**/*NOTES*"
+    # Whole folders named NOTES, e.g. Visuals/source-originals/private NOTES/ for
+    # rights-restricted images. "**/*NOTES*" alone only matches file names.
+    - "**/*NOTES*/**"
     - "**/*NOTE"
     # Raw idea bank - unfiled fragments, never published. See vault CLAUDE.md.
     - Z-Snippets
@@ -209,7 +212,8 @@ plugins:
     layout:
       position: left
       priority: 10
-  - source: github:quartz-community/darkmode
+  # Vendored copy, patched so first-time visitors get dark mode. See plugins/darkmode/README.md.
+  - source: ./plugins/darkmode
     enabled: true
     layout:
       position: left
