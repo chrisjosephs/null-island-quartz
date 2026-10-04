@@ -157,3 +157,41 @@
     }
   }
 }
+
+// Left-floating image: > [!left] floats an image left, at most 200 x 200, and
+// the text after it wraps down its right-hand side. Place the callout before
+// the paragraph it belongs to; a horizontal rule (*** beat or --- section)
+// clears the float so the next beat starts below. Matches the Obsidian
+// center-images.css snippet.
+.callout[data-callout="left"] {
+  float: left;
+  clear: left;
+  width: 200px;
+  max-width: 40%;
+  margin: 0.25em 1.25em 0.75em 0;
+  padding: 0;
+  border: none;
+  background: none;
+  box-shadow: none;
+
+  & > .callout-title {
+    display: none;
+  }
+
+  & > .callout-content {
+    padding: 0;
+  }
+
+  & img {
+    display: block;
+    width: 100%;
+    max-width: 200px;
+    max-height: 200px;
+    object-fit: contain;
+    margin: 0;
+  }
+}
+
+article hr {
+  clear: both;
+}
