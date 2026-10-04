@@ -163,7 +163,8 @@
 // the paragraph it belongs to; a horizontal rule (*** beat or --- section)
 // clears the float so the next beat starts below. Matches the Obsidian
 // center-images.css snippet.
-.callout[data-callout="left"] {
+.callout[data-callout="left"],
+.callout[data-callout="left-framed"] {
   float: left;
   clear: left;
   width: 200px;
@@ -194,4 +195,44 @@
 
 article hr {
   clear: both;
+}
+
+// [!left-framed]: the same float, with a rounded border, for a photo whose
+// background is part of the picture. Cut-outs use plain [!left].
+.callout[data-callout="left-framed"] img {
+  object-fit: cover;
+  border-radius: 8px;
+  border: 1px solid var(--lightgray);
+}
+
+// [!right]: the mirror of [!left]. The image floats right, at most 200 x 200,
+// and the text wraps down its left. A [!left] and a [!right] placed one after
+// the other before the same paragraph flank it from both sides.
+.callout[data-callout="right"] {
+  float: right;
+  clear: right;
+  width: 200px;
+  max-width: 40%;
+  margin: 0.25em 0 0.75em 1.25em;
+  padding: 0;
+  border: none;
+  background: none;
+  box-shadow: none;
+
+  & > .callout-title {
+    display: none;
+  }
+
+  & > .callout-content {
+    padding: 0;
+  }
+
+  & img {
+    display: block;
+    width: 100%;
+    max-width: 200px;
+    max-height: 200px;
+    object-fit: contain;
+    margin: 0;
+  }
 }
