@@ -158,7 +158,8 @@
   }
 }
 
-// Left-floating image: > [!left] floats an image left, at most 200 x 200, and
+// Left-floating image: > [!left] floats an image left, at most 200 x 200 (or at
+// the embed's own |size, up to half the column), and
 // the text after it wraps down its right-hand side. Place the callout before
 // the paragraph it belongs to; a horizontal rule (*** beat or --- section)
 // clears the float so the next beat starts below. Matches the Obsidian
@@ -185,11 +186,25 @@
 
   & img {
     display: block;
+    max-width: 100%;
+    object-fit: contain;
+    margin: 0;
+  }
+
+  & img:not([width]) {
     width: 100%;
     max-width: 200px;
     max-height: 200px;
-    object-fit: contain;
-    margin: 0;
+  }
+
+  // An explicit |size on the embed wins over the 200 px default, up to half the column.
+  &:has(img[width]) {
+    width: fit-content;
+    max-width: 50%;
+  }
+
+  & img[width] {
+    height: auto;
   }
 }
 
@@ -229,10 +244,61 @@ article hr {
 
   & img {
     display: block;
+    max-width: 100%;
+    object-fit: contain;
+    margin: 0;
+  }
+
+  & img:not([width]) {
     width: 100%;
     max-width: 200px;
     max-height: 200px;
-    object-fit: contain;
-    margin: 0;
+  }
+
+  // An explicit |size on the embed wins over the 200 px default, up to half the column.
+  &:has(img[width]) {
+    width: fit-content;
+    max-width: 50%;
+  }
+
+  & img[width] {
+    height: auto;
+  }
+}
+
+// [!gallery-2]: exactly two across, each half the width, for a pair of large
+// images. One column on narrow screens. Items are nested [!center] callouts as
+// in [!gallery]; embeds without a |size fill their half. Matches the Obsidian
+// center-images.css snippet.
+.callout[data-callout="gallery-2"] {
+  border: none;
+  background: transparent;
+  padding: 0;
+  box-shadow: none;
+
+  & > .callout-title {
+    display: none;
+  }
+
+  & > .callout-content {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 1.5rem;
+    align-items: start;
+    padding: 0;
+
+    & > * {
+      margin: 0;
+      min-width: 0;
+    }
+
+    @media (max-width: 500px) {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  & img {
+    width: 100%;
+    height: auto;
   }
 }
